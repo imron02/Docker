@@ -1,26 +1,22 @@
-FROM node:8.9.4-alpine
+FROM node:8.10.0
 
 # Install basic
-RUN apk add --no-cache openssl ca-certificates unzip bash wget
+RUN apt-get update \
+        && apt-get install -y unzip \
+        && apt-get install -y --no-install-recommends apt-utils
 
 # Install Java
-ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=162 \
-    JAVA_BUILD=12 \
-    JAVA_PATH=0da788060d494f5095bf8624735fa2f1 \
-    JAVA_HOME="/usr/lib/java"
+ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle/
 
-RUN wget --no-cookies --quiet --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" \
-        && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
-        && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk \
-        && apk add glibc-2.27-r0.apk \
-        && mkdir "${JAVA_HOME}" \
-        && tar -xzvf jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz --strip-components=1 -C /usr/lib/java \
-        && rm jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz glibc-2.27-r0.apk
+RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list \
+    && echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list \
+    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
+    && apt-get update \
+    && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
+    && apt-get -y install oracle-java8-installer
 
 # Install Android SDK
-ENV ANDROID_HOME=/usr/lib/android-sdk-linux
+ENV ANDROID_HOME=/opt/android-sdk-linux
 
 RUN mkdir "${ANDROID_HOME}" \
 	&& echo ANDROID_HOME="${ANDROID_HOME}" >> /etc/environment \
