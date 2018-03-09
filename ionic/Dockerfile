@@ -1,4 +1,4 @@
-FROM imron02/base-hybrid:1.0.3
+FROM imron02/base-hybrid:1.0.4
 
 # Install ionic package
 RUN npm install -g cordova ionic
