@@ -13,7 +13,7 @@ Docker yang saya buat berdasarkan beberapa tutorial basic di bawah ini:
 2. [Docker get started](https://docs.docker.com/get-started/)
 
 #### Cara pakai:
-1. Buat project di gitlab, kemudian buat file `.gitlab-ci.yml` di root project anda, lalu copy paste ini:
+1. Buat project ionic di gitlab, kemudian buat file `.gitlab-ci.yml` di root project anda, lalu copy paste ini:
 ```yaml
 image: imron02/ionic:1.0.1
 
