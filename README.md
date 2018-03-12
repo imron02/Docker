@@ -33,7 +33,7 @@ ionic_build:
       - www/
   only:
     - /^build_.*$/
-    - triggers
+    - master
 
 compile_android:
   stage: compile
@@ -53,7 +53,7 @@ compile_android:
       - build-apk/*.apk
   only:
     - /^build_.*$/
-    - triggers
+    - master
 ```
 
 `.gitlab-ci.yml` yang saya buat berdasarkan beberapa tutorial basic di bawah ini:
