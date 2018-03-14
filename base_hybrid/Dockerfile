@@ -26,11 +26,12 @@ RUN mkdir "${ANDROID_HOME}" \
 
 RUN yes | "${ANDROID_HOME}"/tools/bin/sdkmanager --licenses \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "platform-tools" \
-	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;27.0.3" \
     && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;23.0.1" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;27.0.3" \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "extras;android;m2repository" \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "extras;google;m2repository" \
-	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-27"
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-23" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-27"
 
 # Install Gradle
 ENV GRADLE_VERSION=4.6
