@@ -1,4 +1,4 @@
-FROM imron02/base-hybrid:1.0.4
+FROM imron02/base-hybrid:1.0.6
 
 # Init git
 RUN git config --global user.email "you@example.com" && \
