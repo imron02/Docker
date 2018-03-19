@@ -19,7 +19,8 @@ RUN apt-get install -y python-dev lib32stdc++6 lib32z1 \
 # Install react native package
 RUN npm install -g react-native-cli \
 	&& yarn global add react-native-cli \
-	&& react-native init AwesomeProject
+	&& react-native init AwesomeProject \
+	&& npm install -g exp
 
 WORKDIR AwesomeProject
 EXPOSE 8081
