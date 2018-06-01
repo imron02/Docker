@@ -1,4 +1,4 @@
-FROM node:8.10.0
+FROM node:8.11.2
 
 # Install basic
 RUN apt-get update \
@@ -26,20 +26,18 @@ RUN mkdir "${ANDROID_HOME}" \
 
 RUN yes | "${ANDROID_HOME}"/tools/bin/sdkmanager --licenses \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "platform-tools" \
-    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;23.0.1" \
-    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;27.0.3" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;26.0.2" \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "extras;android;m2repository" \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "extras;google;m2repository" \
-    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-23" \
-    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-27"
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-26"
 
 # Install Gradle
-ENV GRADLE_VERSION=4.6
+ENV GRADLE_VERSION=4.4
 
-RUN wget --quiet https://services.gradle.org/distributions/gradle-"${GRADLE_VERSION}"-bin.zip \
+RUN wget https://services.gradle.org/distributions/gradle-"${GRADLE_VERSION}"-all.zip -q \
     && mkdir /opt/gradle \
-    && unzip -d /opt/gradle gradle-"${GRADLE_VERSION}"-bin.zip \
-    && rm gradle-"${GRADLE_VERSION}"-bin.zip
+    && unzip -d /opt/gradle gradle-"${GRADLE_VERSION}"-all.zip \
+    && rm gradle-"${GRADLE_VERSION}"-all.zip
 
 # Setup environment
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tool/tools/bin:${ANDROID_HOME}/platform-tools:/opt/gradle/gradle-"$GRADLE_VERSION"/bin
