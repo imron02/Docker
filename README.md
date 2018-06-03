@@ -77,6 +77,7 @@ compile_android:
     - chmod +x ./android/gradlew
   script: 
     - cd android
+    - ./gradlew clean
     - ./gradlew assembleDebug
     - ./gradlew assembleRelease
     - cd ..
