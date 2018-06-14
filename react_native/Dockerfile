@@ -1,4 +1,4 @@
-FROM imron02/base-hybrid:1.0.3-alpine
+FROM imron02/base-hybrid:1.0.4-alpine
 
 # Init git, change user email with your email
 RUN git config --global user.email "imron.r@meteor.id" && \
