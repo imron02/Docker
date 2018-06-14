@@ -1,0 +1,45 @@
+FROM openjdk:8-alpine
+
+# Install basic
+ENV GLIBC_VERSION=2.27-r0
+
+RUN apk --no-cache add ca-certificates wget \
+    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
+    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+    && apk add glibc-${GLIBC_VERSION}.apk
+
+# Install Android SDK
+ENV ANDROID_HOME=/opt/android-sdk-linux
+
+RUN mkdir -p "${ANDROID_HOME}" \
+	&& wget --quiet https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip \
+	&& unzip sdk-tools-linux-3859397.zip -d "${ANDROID_HOME}" \
+	&& rm sdk-tools-linux-3859397.zip
+
+RUN mkdir -p /root/.android \
+    && touch /root/.android/repositories.cfg \
+    && yes | "${ANDROID_HOME}"/tools/bin/sdkmanager --licenses \
+	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "platform-tools" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;23.0.1" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;26.0.2" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;27.0.2" \
+	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "extras;android;m2repository" \
+	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "extras;google;m2repository" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-23" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-25" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-26" \
+    && "${ANDROID_HOME}"/tools/bin/sdkmanager "platforms;android-27"
+
+# Install Gradle
+ENV GRADLE_VERSION=4.4
+
+RUN wget --quiet https://services.gradle.org/distributions/gradle-"${GRADLE_VERSION}"-all.zip \
+    && mkdir /opt/gradle \
+    && unzip -d /opt/gradle gradle-"${GRADLE_VERSION}"-all.zip \
+    && rm gradle-"${GRADLE_VERSION}"-all.zip
+
+# Setup environment
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tool/tools/bin:${ANDROID_HOME}/platform-tools:/opt/gradle/gradle-"$GRADLE_VERSION"/bin
+
+# Clear all cache & Delete unused package
+RUN rm -rf /tmp/* /var/cache/apk/*
