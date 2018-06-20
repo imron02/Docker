@@ -5,7 +5,16 @@ RUN git config --global user.email "imron.r@meteor.id" && \
     git config --global user.name "Imron Rosdiana"
 
 # Install watchman
-RUN apk add --no-cache watchman
+RUN apk add --no-cache python-dev autoconf automake libtool build-base openssl-dev linux-headers \
+	&& git clone https://github.com/facebook/watchman.git \
+	&& cd watchman \
+	&& git checkout v4.9.0 \
+	&& ./autogen.sh \
+	&& ./configure \
+	&& make \
+	&& make install \
+	&& cd .. \
+	&& rm -rf watchman
 
 # Install react native package
 RUN npm install -g react-native-cli npm@6.0.1 exp \
