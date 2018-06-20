@@ -1,8 +1,8 @@
-FROM node:8.11.2
+FROM node:8.11.3
 
 # Install basic
 RUN apt-get update \
-        && apt-get install -y unzip \
+        && apt-get install -y --no-install-recommends unzip \
         && apt-get install -y --no-install-recommends apt-utils
 
 # Install Java
@@ -13,7 +13,7 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | te
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
     && apt-get update \
     && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
-    && apt-get -y install oracle-java8-installer
+    && apt-get -y install --no-install-recommends oracle-java8-installer
 
 # Install Android SDK
 ENV ANDROID_HOME=/opt/android-sdk-linux
@@ -24,7 +24,9 @@ RUN mkdir "${ANDROID_HOME}" \
 	&& unzip sdk-tools-linux-3859397.zip -d "${ANDROID_HOME}" \
 	&& rm sdk-tools-linux-3859397.zip
 
-RUN yes | "${ANDROID_HOME}"/tools/bin/sdkmanager --licenses \
+RUN mkdir -p /root/.android \
+    && touch /root/.android/repositories.cfg \
+    && yes | "${ANDROID_HOME}"/tools/bin/sdkmanager --licenses \
 	&& "${ANDROID_HOME}"/tools/bin/sdkmanager "platform-tools" \
     && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;23.0.1" \
     && "${ANDROID_HOME}"/tools/bin/sdkmanager "build-tools;26.0.2" \
@@ -48,4 +50,4 @@ RUN wget https://services.gradle.org/distributions/gradle-"${GRADLE_VERSION}"-al
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tool/tools/bin:${ANDROID_HOME}/platform-tools:/opt/gradle/gradle-"$GRADLE_VERSION"/bin
 
 # Clear all cache & Delete unused package
-RUN rm -rf /tmp/* /var/cache/apk/*
+RUN rm -rf /tmp/* /var/lib/apt/lists/*

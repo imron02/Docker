@@ -9,4 +9,4 @@ Repo ini terdiri dari 3 docker image.
 4. Cara penggunakan atau membuat _docker_ ini, silahkan baca wikinya [di sini](https://github.com/imron02/Docker/wiki).
 
 > Jika ingin ikut berkontribusi, silahkan fork repo ini.
-> Dockerfile ini berdasarkan dari docker [node:8.11.2](https://hub.docker.com/_/node/), menggunakan sistem operasi debian jessie dan dari docker [openjdk:8-alpine](https://hub.docker.com/_/openjdk/), menggunakan sistem operasi alpine linux.
+> Dockerfile ini berdasarkan dari docker [node:8.11.2](https://hub.docker.com/_/node/), menggunakan sistem operasi debian jessie.
