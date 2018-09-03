@@ -5,8 +5,8 @@ RUN git config --global user.email "imron.r@meteor.id" && \
     git config --global user.name "Imron Rosdiana"
 
 # Install watchman
-RUN apt-get update && apt-get upgrade \
-	apt-get install -y --no-install-recommends python-dev lib32stdc++6 lib32z1 \
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends python-dev lib32stdc++6 lib32z1 \
 	&& git clone https://github.com/facebook/watchman.git \
 	&& cd watchman \
 	&& git checkout v4.9.0 \
