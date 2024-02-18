@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+    mariadb:
+        image: mariadb:10.6
+        ports:
+            - "3306:3306"
+        environment:
+            MARIADB_ROOT_PASSWORD: password
+            MARIADB_DATABASE: my-db
+        volumes:
+            - mariadb-volume:/var/lib/mysql
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+    redis:
+        image: redis:6.2-alpine
+        restart: always
+        ports:
+            - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+        volumes:
+            - cache:/data
+
+volumes:
+    mariadb-volume:
+    cache:
+        driver: local
